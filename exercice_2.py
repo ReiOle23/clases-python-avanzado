@@ -7,7 +7,6 @@
 # y el ultimo piso siempre va a ser la azotea (A)
  
 from dataclasses import dataclass, field
-import json
 
 @dataclass
 class Edificio:
@@ -21,10 +20,10 @@ class Edificio:
             return f"S{abs(num)}"
         elif num == 0:
             return "B"
-        elif num == self.top_floor:
-            return "A"
         elif num == 1:
             return "E"
+        elif num == self.top_floor:
+            return "A"
         return num
     
     def set_floors(self):
