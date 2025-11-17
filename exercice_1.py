@@ -7,19 +7,16 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Cola:
-    content: deque = field(default_factory=deque)
+    pendientes: deque = field(default_factory=deque)
     
     def añadir_tarea(self, value):
-        self.content.append(value)
+        self.pendientes.append(value)
     
     def siguiente_tarea(self):
-        return self.content.popleft() if self.content else None
+        return self.pendientes.popleft() if self.pendientes else None
         
     def tareas_pendientes(self):
-        return f"Cola(pendientes={len(self.content)})"
-                
-    def __repr__(self):
-        return self.tareas_pendientes()
+        return len(self.pendientes)
     
 
 if __name__ == "__main__":
