@@ -1,5 +1,6 @@
 from decimal import Decimal
 from fixtures import event_bus, cart, laptop, mouse
+from main import Item
 
 def test_item_creation(laptop):
     """Verifica creación basica de Item"""
