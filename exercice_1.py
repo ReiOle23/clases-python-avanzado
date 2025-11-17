@@ -3,7 +3,7 @@
 # pensad en como puede ser. Lo que si que quiero es que haya una buena cola, que se 
 # maneje esto bien, y que tenga estos tres metodos. añadir_tarea, siguiente_tarea, tareas_pendientes
 from collections import deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 @dataclass
 class Cola:
@@ -31,3 +31,4 @@ if __name__ == "__main__":
     print(cola.siguiente_tarea())  # backup
 
     print(cola)  # Cola(pendientes=1)
+    print(asdict(cola)) # test
