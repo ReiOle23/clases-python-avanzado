@@ -7,6 +7,7 @@
 # y el ultimo piso siempre va a ser la azotea (A)
  
 from dataclasses import dataclass, field
+import unittest
 
 @dataclass
 class Edificio:
@@ -34,6 +35,10 @@ class Edificio:
         self.set_floors()
     
 
+class TestCalculaMedia(unittest.TestCase):
+    def test_plantas(self):
+        inst = Edificio(-2, 10)
+        self.assertEqual(inst.plantas, ["S2", "S1", "B", "E", 2, 3, 4, 5, 6, 7, 8, 9, "A"])
+
 if __name__ == "__main__":
-    inst = Edificio(-2, 10)
-    print(inst.plantas)  # [S2, S1, B, E, 2, 3, 4, 5, 6, 7, 8, 9, A]
+    unittest.main()
