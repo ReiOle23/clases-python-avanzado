@@ -25,3 +25,6 @@ class Cart:
         
     def get_items(self):
         return self.items
+    
+    def get_total(self):
+        return sum(list(map(lambda x:x.price, self.items)))
