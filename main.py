@@ -29,11 +29,11 @@ class Cart:
     event_bus: EventBus
     items: List[Item] = field(default_factory=list)
     
-    def find_by_id_v1(self, item_id: str):
+    def find_by_id(self, item_id: str):
         return next((item for item in self.items if item.id == item_id), None)
     
     def add_item(self, item:Item):
-        exists = self.find_by_id_v1(item.id)
+        exists = self.find_by_id(item.id)
         if exists:
             exists.quantity+=item.quantity
         else:
