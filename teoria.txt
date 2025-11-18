@@ -1,0 +1,2 @@
+python gil prevents from doing real concurrency as every thread pass to gil and it use 1 unique thread.
+nucleos can not be use, but threads and process yes.

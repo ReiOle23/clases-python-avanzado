@@ -1,43 +1,31 @@
-from dataclasses import dataclass, field
-from decimal import Decimal
-from typing import List 
 
-@dataclass
-class Item:
-    id: str
-    name: str
-    price: Decimal
-    quantity: int=1
+import asyncio
+from time import sleep
+from datetime import datetime
+from threading import Thread
+
+inicio = datetime.now()
+def funcion_1():
+    sleep(2)
+    print("Hecha tarea 1")
     
+def funcion_2():
+    sleep(1)
+    print("Hecha tarea 2")
     
-class EventBus:
+def funcion_3():
+    sleep(3)
+    print("Hecha tarea 3")
     
-    def __init__(self):
-        self.subscribers = []
-    
-    def subscribe(self, listener):
-        self.subscribers.append(listener)
-        
-    def publish(self, event_name, data):
-        for listener in self.subscribers:
-            listener(event_name, data)
-        
-    
-@dataclass
-class Cart:
-    cart_id:str
-    event_bus: EventBus
-    items: dict[Item] = field(default_factory=dict)
-    
-    def add_item(self, item:Item):
-        if item.id in self.items:
-            self.items[item.id].quantity+=item.quantity 
-        else:
-            self.items[item.id]= item
-            self.event_bus.publish("item_added",{"item": item})
-        
-    def get_items(self):
-        return self.items
-    
-    def get_total(self):
-        return sum(self.items.values())
+h1 = Thread(target=funcion_1)  # hilo 1
+h2 = Thread(target=funcion_2)  # hilo 2
+h3 = Thread(target=funcion_3)  # hilo 3
+
+h1.start()
+h2.start()
+h3.start()
+
+final = datetime.now()
+
+print(f"He tardado {final - inicio}")
+# hilo 0
