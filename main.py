@@ -11,8 +11,17 @@ class Item:
     
     
 class EventBus:
+    
     def __init__(self):
-        pass
+        self.subscribers = []
+    
+    def subscribe(self, listener):
+        self.subscribers.append(listener)
+        
+    def publish(self, event_name, data):
+        for listener in self.subscribers:
+            listener(event_name, data)
+        
     
 @dataclass
 class Cart:
@@ -29,6 +38,7 @@ class Cart:
             exists.quantity+=item.quantity
         else:
             self.items.append(item)
+            self.event_bus.publish("item_added",{"item": item})
         
     def get_items(self):
         return self.items
