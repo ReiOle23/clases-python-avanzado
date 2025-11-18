@@ -27,21 +27,17 @@ class EventBus:
 class Cart:
     cart_id:str
     event_bus: EventBus
-    items: List[Item] = field(default_factory=list)
-    
-    def find_by_id(self, item_id: str):
-        return next((item for item in self.items if item.id == item_id), None)
+    items: dict[Item] = field(default_factory=dict)
     
     def add_item(self, item:Item):
-        exists = self.find_by_id(item.id)
-        if exists:
-            exists.quantity+=item.quantity
+        if item.id in self.items:
+            self.items[item.id].quantity+=item.quantity 
         else:
-            self.items.append(item)
+            self.items[item.id]= item
             self.event_bus.publish("item_added",{"item": item})
         
     def get_items(self):
         return self.items
     
     def get_total(self):
-        return sum(list(map(lambda x:x.price, self.items)))
+        return sum(self.items.values())
