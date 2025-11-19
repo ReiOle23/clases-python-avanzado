@@ -1,16 +1,39 @@
-# Ejercicio - Callback para JSON
-# Voy a darle un JSON (archivo) y quiero poder hacerle la operacion (funcion) que me de la gana
-# por ejemplo buscar ERROR, o transformarlo todo a mayusculas, o etc...
-import json
+from threading import Thread
+from time import sleep
 
-def json_callback(data, operation):
-    return operation(data)
+cuenta_bancaria = 1000
 
-def test_json_callback():
-    with open("test.json", 'r') as file:
-        json_data = json.load(file)
-        
-    expected = {k: v.upper() for k, v in json_data.items()}
-    callback = json_callback(json_data, lambda data: {k: v.upper() for k,v in data.items()})
-    assert callback == expected
-    
+def retirar_efectivo(cantidad: int):
+    global cuenta_bancaria
+    sleep(0.1)
+    cuenta_bancaria -= cantidad
+    print(f"Cuenta bancaria con {cuenta_bancaria} €")
+    return cantidad
+
+tarea_1 = Thread(target=retirar_efectivo, args=(500,))
+tarea_2 = Thread(target=retirar_efectivo, args=(500,))
+
+tarea_1.start()
+tarea_2.start()
+
+tarea_1.join()
+tarea_2.join()
+
+print(f"Me queda {cuenta_bancaria} € en mi banco")
+
+from multiprocessing import Process
+
+cuenta_bancaria = 1000
+
+tarea_1 = Process(target=retirar_efectivo, args=(500,))
+tarea_2 = Process(target=retirar_efectivo, args=(500,))
+
+tarea_1.start()
+tarea_2.start()
+tarea_2.terminate()
+tarea_2.kill()
+
+tarea_1.join()
+tarea_2.join()
+
+print(f"Me queda {cuenta_bancaria} € en mi banco")
