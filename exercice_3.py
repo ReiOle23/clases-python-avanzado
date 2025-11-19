@@ -1,35 +1,58 @@
-# Ejercicio - Crear un codigo en Python que me permita evaluar funciones matematicas, por ejemplo
-# f(x) = x + 5 es una funcion por la que x = 10 se evalua como: 
-# f(10) = 10 + 5 = 15
-# por tanto tengo que ver print(f(x)) es 15 si x = 10
-# sin embargo, la funcion puede ser de cualquier forma!
-# como hago el codigo de forma que defina una x = ? (numero) y f(x) me de una funcion correcta?
-from pytest import fixture, mark
+# verifica que los metodos esten
+# i que devuelvan el mismo typo
+from typing import Protocol
+class Animal(Protocol):
+    def comer(self) -> str:
+        ...
+        
+class Gacela:
+    def comer(self)-> str:
+        return "la gacela se come hierva"
+        ...
 
+def que_coma(animal: Animal):
+    print(animal.comer())
 
-class MathFunction():
+# Ejerciciio - Hacer un Protocol para un Handler de eventos
+from typing import Protocol
+# el Protocol se utiliza para checkear estructura, si no 
+# Mal porque el SomeData no implementa los dos handler
+class EventHandler(Protocol):
+    def handle_get_data(self) -> dict:
+        ...
+
+    def handle_len_data(self) -> int:
+        ...
+
+class SomeData:
+    data: dict = {}
+    def handle_get_data(self)-> dict:
+        return self.data
+        ...
+
+def get_data(event: EventHandler):
+    print(event.handle_get_data())
+
+sd= SomeData()
+get_data(sd)
+
+# Bien
+class EventHandler(Protocol):
+    def handle(self, event: dict) -> dict:
+        ...
+class SizeCounterEventHandler:
+    def handle(self, event: dict) -> dict:
+        event["size"] = len(event) + 1
+        return event
+class AddSumParamEventHandler:
+    def handle(self, event: dict) -> dict:
+        event["sum"] = 2+2
+        return event
     
-    def __init__(self, function):
-        self.function = function
+def use_event(hanlder: EventHandler, event: dict):
+    return hanlder.handle(event)
     
-    def validate(self, x):
-        return self.function(x)
-
-@fixture
-def random_funct():
-    def f(x):
-        return x + 5
-    return f
-
-def test_f_function(random_funct):
-    m = MathFunction(random_funct)
-    assert m.validate(5) == random_funct(5)
-    
-
-x = 10
-y = 5
-z = 9
-f = lambda x: lambda y: lambda z: x + y + z
-res = f(x)(y)(z)
-print(res)
-    
+sd= SizeCounterEventHandler()
+print(use_event(sd,{}))
+asum= AddSumParamEventHandler()
+print(use_event(asum,{}))

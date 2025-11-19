@@ -1,0 +1,21 @@
+{
+  "empresa": "TechCorp",
+  "empleados": [
+    {"id": 1, "nombre": "Laura", "departamento": "IT"},
+    {"id": 2, "nombre": "Carlos", "departamento": "Ventas"},
+    {"id": 3, "nombre": "María", "departamento": "Marketing"},
+    {"id": 4, "nombre": "Diego", "departamento": "Finanzas"}
+  ],
+  "proyectos": {
+    "activos": ["Alpha", "Beta", "Gamma", "Delta"],
+    "finalizados": ["Omega", "Sigma", "Lambda"]
+  },
+  "config": {
+    "version": "1.4.8",
+    "modulos": {
+      "seguridad": true,
+      "sincronizacion": true,
+      "analitica": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "producto": "teclado",
+  "precio": 29.99,
+  "caracteristicas": {
+    "idioma": "ES",
+    "inalambrico": false,
+    "color": "negro"
+  },
+  "stock": [12, 15, 18, 10]
+}
+ 
