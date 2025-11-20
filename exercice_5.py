@@ -1,39 +1,44 @@
-from threading import Thread
-from time import sleep
+from typing import Protocol
+from abc import ABC, abstractmethod
 
-cuenta_bancaria = 1000
+class Vehicle(ABC):
+    @abstractmethod
+    def arrancar(self):
+        ...
 
-def retirar_efectivo(cantidad: int):
-    global cuenta_bancaria
-    sleep(0.1)
-    cuenta_bancaria -= cantidad
-    print(f"Cuenta bancaria con {cuenta_bancaria} €")
-    return cantidad
+class Motoneta(Vehicle):
+    pass
 
-tarea_1 = Thread(target=retirar_efectivo, args=(500,))
-tarea_2 = Thread(target=retirar_efectivo, args=(500,))
+inst = Motoneta()
+# falla falta implementar el metodo obligatorio
+inst.arrancar()
 
-tarea_1.start()
-tarea_2.start()
+class Vehicle(Protocol):
+    @abstractmethod
+    def arrancar(self):
+        ...
 
-tarea_1.join()
-tarea_2.join()
+class Motoneta:
+    pass
 
-print(f"Me queda {cuenta_bancaria} € en mi banco")
+def arrancar_motoneta(veh: Vehicle):
+    veh.arrancar()
+    
+# falla porque no tiene ese metodo
+arrancar_motoneta(Motoneta())
 
-from multiprocessing import Process
+class Motoneta:
+    def arrancar(self):
+        print("brum brum")
 
-cuenta_bancaria = 1000
+def arrancar_motoneta(veh: Vehicle):
+    veh.arrancar()
+    
+# ahora si
+arrancar_motoneta(Motoneta())
 
-tarea_1 = Process(target=retirar_efectivo, args=(500,))
-tarea_2 = Process(target=retirar_efectivo, args=(500,))
 
-tarea_1.start()
-tarea_2.start()
-tarea_2.terminate()
-tarea_2.kill()
-
-tarea_1.join()
-tarea_2.join()
-
-print(f"Me queda {cuenta_bancaria} € en mi banco")
+# definir interfaz: usamos ABC o Protocol
+# usar ABC en caso de duda
+# ABC estructura clara de ABC
+# Protocol cuando un ABC no se pueda hacer porque no hay herencia
