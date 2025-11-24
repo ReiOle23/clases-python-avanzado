@@ -21,15 +21,16 @@ def client_session_buy_with_lock(client: str, item: str) -> callable:
         else:
             active_sessions = 10
             print("---------------New Sessions---------------")
-
+    # aqui hace release
 
 sem = Semaphore(10)
 # Semaphore
 def client_session_buy_with_semaphore(client: str, item: str) -> callable:
     with sem:
-        time.sleep(0.1)
         print(f"Session name:{client} to buy item {item}")
-    print("---------------New Sessions---------------")
+        time.sleep(0.1)
+        print("---------------New Sessions---------------")
+    # aqui hace release
     
 
 if __name__ == "__main__":
