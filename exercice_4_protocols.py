@@ -1,5 +1,4 @@
 from typing import Protocol
-from abc import abstractmethod
 
 class Pc:
     def __init__(self, os):
@@ -11,14 +10,12 @@ class Mobile:
         self.mpx = mpx
 
 class ComponentFactory(Protocol):
-    @abstractmethod
     def create(self):
         ...
         
 class PcFactory:
     def create(self, *args, **kwargs):
         return Pc(*args, **kwargs)
-        
         
 class MobileFactory:
     def create(self, *args, **kwargs):
