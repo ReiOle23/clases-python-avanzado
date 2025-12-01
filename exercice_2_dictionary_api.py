@@ -10,47 +10,59 @@ class DiccionarioWeb(Diccionario):
         super().__init__()
         self._urls = urls
         
+    
+    def add_response_obj(self, key:str, values: aiohttp.ClientResponse):
+        if not key or not values:
+            return
+        status_code = values.status
+        headers = values.headers
+        content = values.content
+        self.__setitem__(key, {
+            'status_code': status_code,
+            'headers': dict(headers),
+            'content': content
+        })
+    
+    def save_results(self, data: list[tuple[str,aiohttp.ClientResponse]]):
+        for response in data:
+            if response:
+                self.add_response_obj(response[0],response[1])
         
     async def scrap_urls(self):
-        async with aiohttp.ClientSession() as session:
-            tasks = [self.get_url(session, url) for url in self._urls]
+        session_timeout = aiohttp.ClientTimeout(total=10)
+        async with aiohttp.ClientSession(timeout=session_timeout) as session:
+            tasks = [self.get_url_response(session, url) for url in self._urls]
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            for n in results:
-                print("---------", n)
+            self.save_results(results)
         
-    async def get_url(self, session: aiohttp.ClientSession ,url: str):
-        print(url)
-        async with session.get('http://python.org') as response:
-
-            print("Status:", response.status)
-            print("Content-type:", response.headers['content-type'])
-
-            html = await response.text()
-            print("Body:", html[:15], "...")
+    async def get_url_response(self, session: aiohttp.ClientSession ,url: str):
         try:
+            print(f"Getting response from: {url} ...")
             async with session.get(url) as response:
-                status_code = response.status_code
-                headers = response.headers
-                data = await response.text()
-                return (url,status_code,headers,data)
-                # self.__setitem__(url, (status_code,headers,data))
-        except:
-            Exception("Failed on getting response of url:",url)
+                print(f"Response from {url} ")
+                return (url, response)
+        except asyncio.TimeoutError:
+            print("Long operation timed out on ",url)
+            return None
+        except Exception as e:
+            print(f"Failed on getting response of url {url}, errors: {e}")
+            return None
 
         
 if __name__ in "__main__":
     urls = [
-        "https://httpbin.org/get",
-        "https://httpbin.org/post",
-        "https://jsonplaceholder.typicode.com/posts",
-        "https://api.github.com/users/github",
-        "https://pokeapi.co/api/v2/pokemon/pikachu",
-        "https://catfact.ninja/fact",
-        "https://official-joke-api.appspot.com/random_joke",
-        "https://api.coindesk.com/v1/bpi/currentprice.json",
-        "https://restcountries.com/v3.1/name/spain",
-        "https://dog.ceo/api/breeds/image/random"
+        'https://httpbin.org/json',                    
+        'https://jsonplaceholder.typicode.com/posts/1',
+        'https://api.github.com/users/github',          
+        'https://catfact.ninja/fact',                   
+        'https://api.coindesk.com/v1/bpi/currentprice.json', 
+        'https://dog.ceo/api/breeds/image/random',      
+        'https://api.publicapis.org/entries',
+        'https://official-joke-api.appspot.com/random_joke', 
+        'https://api.spacexdata.com/v4/launches/latest', 
+        'https://httpbin.org/user-agent'  
     ]
     object = DiccionarioWeb(urls)
     asyncio.run(object.scrap_urls())
-    print(object._data)
+    print("Print Diccionario responses object: ",object)
+    
