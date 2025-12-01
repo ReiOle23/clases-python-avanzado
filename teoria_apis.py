@@ -30,3 +30,5 @@ if __name__ in "__main__":
     for th in threads_started:
         t.join()
         
+        
+# https://docs.python.org/3/reference/datamodel.html

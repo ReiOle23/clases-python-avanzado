@@ -1,5 +1,6 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor
+# https://docs.python.org/es/3/library/concurrent.futures.html#processpoolexecutor
 
 def request_url(url:str):
     try:
