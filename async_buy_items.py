@@ -48,9 +48,6 @@ def user_3():
 def auction():
     return Auction()
 
-# item1 = Item(1,"Espada del Norte", None)
-# item2 = Item(2,"Armadura dorada", None)
-# item3 = Item(3,"Botas de Hierro", None)
 def test_auction_add_item(auction, user_1):
     item1 = Item(1,"Espada del Norte", user_1, True)
     auction.add_item(item1)
@@ -71,12 +68,22 @@ def test_auction_buy_item(auction, user_1, user_2):
     assert len(auction.item_bag) == 0
         
 @pytest.mark.asyncio
-async def test_auction_two_users_buy_same_item(auction, user_1, user_2, user_3):
-    item1 = Item(1,"Espada del Norte", user_1, True)
+async def test_auction_two_users_buy_items(auction, user_1, user_2, user_3):
+    item1 = Item(1, "Espada del Norte", user_1, True)
+    item2 = Item(2, "Armadura dorada", user_1, True)
     auction.add_item(item1)
-    async with 
-    auction.buy_item(item1.id,user_2)
-    auction.buy_item(item1.id,user_3)
+    auction.add_item(item2)
+    result1 = await auction.buy_item(item1.id,user_2)
+    result2 = await auction.buy_item(item1.id,user_3)
+    assert result1.owner == user_2
+    assert result2.owner == user_3
     
-    result = await async_func()
-    assert result == 42
+# @pytest.mark.asyncio
+# async def test_auction_two_users_buy_same_item(auction, user_1, user_2, user_3):
+#     item1 = Item(1,"Espada del Norte", user_1, True)
+#     auction.add_item(item1)
+#     result1 = await auction.buy_item(item1.id,user_2)
+#     result2 = await auction.buy_item(item1.id,user_3)
+    
+#     # result = await async_func()
+#     # assert result == 42

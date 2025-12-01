@@ -1,7 +1,7 @@
 # heredar este diccionario y crear un Diccionario web con get async que le vamos a meter una lista de url i tiene que ir capturando
 # esas url al lado de su resultado
 # keys urls, values con data, status_code y headers
-from exercice_1_dictionary_class import Diccionario
+from teoria_apis import Diccionario
 import aiohttp, asyncio
 
 class DiccionarioWeb(Diccionario):
