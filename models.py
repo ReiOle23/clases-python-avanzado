@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import date
 
 @dataclass
 class User:
@@ -12,13 +11,9 @@ class Book:
     id: int
     title: str
     author: str
-    loan_date: date
+    loan_date: str
     loaned_to: User
     
-    def set_loan(self, user:User, date_until: date):
-        self.loan_date = date_until
-        self.loaned_to = user
-
 @dataclass
 class Library:
     id: int

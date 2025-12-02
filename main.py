@@ -1,12 +1,12 @@
 import pytest
 from models import Library, User, Book
-from controllers import LibraryService, BookService
+from controllers import LibraryService, BookService, Database
 
-    
 @pytest.fixture
 def library():
     instance = Library(1,{})
-    return LibraryService(instance)
+    Database.save_obj(instance)
+    return LibraryService(instance.id)
 
 @pytest.fixture
 def user():
@@ -15,7 +15,8 @@ def user():
 @pytest.fixture
 def lotr_book():
     instance = Book(2,"Lord of the rings","JRR Tolkien",None,None)
-    return BookService(instance)
+    Database.save_obj(instance)
+    return BookService(instance.id)
         
 def test_library_has_no_book(library, lotr_book):
     assert library.get_book(lotr_book.instance.id) is None
@@ -29,6 +30,6 @@ def test_library_has_book(library, lotr_book):
 def test_user_loan_book(library, lotr_book, user):
     library.add_book(lotr_book.instance)
     book_obj = library.loan_book(user, lotr_book.instance.id)
-    assert book_obj.id == lotr_book.instance.id
-    assert book_obj.loaned_to == user
+    assert book_obj.instance.id == lotr_book.instance.id
+    assert book_obj.instance.loaned_to == user
     

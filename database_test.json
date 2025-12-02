@@ -1,0 +1,30 @@
+{
+    "User": {},
+    "Book": {
+        "2": {
+            "id": 2,
+            "title": "Lord of the rings",
+            "author": "JRR Tolkien",
+            "loan_date": "2026-01-03",
+            "loaned_to": {
+                "id": 1,
+                "name": "Julia",
+                "surnames": "Gutierrez"
+            }
+        }
+    },
+    "Library": {
+        "1": {
+            "id": 1,
+            "books": {
+                "2": {
+                    "id": 2,
+                    "title": "Lord of the rings",
+                    "author": "JRR Tolkien",
+                    "loan_date": null,
+                    "loaned_to": null
+                }
+            }
+        }
+    }
+}
