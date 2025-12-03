@@ -1,5 +1,12 @@
 {
     "User": {},
     "Book": {},
-    "Library": {}
+    "Library": {
+        "1": {
+            "id": 1,
+            "name": "Hola",
+            "location": "Barcelona",
+            "books": {}
+        }
+    }
 }

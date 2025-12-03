@@ -16,6 +16,8 @@
     "Library": {
         "1": {
             "id": 1,
+            "name": "example",
+            "location": "barcelona",
             "books": {
                 "2": {
                     "id": 2,

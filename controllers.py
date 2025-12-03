@@ -20,6 +20,16 @@ class Database:
             yield
         finally:
             cls.database_file = original_file
+            
+    @classmethod
+    def generate_id_from(cls, _class:T_model):
+        model_type = _class.__name__
+        with open(cls.database_file, "r") as json_file:
+            data = json.load(json_file)
+        objects = list(data[model_type])
+        last_id = int(objects[-1])+1 if objects else 1
+        return last_id
+        
     
     @classmethod
     def clear(cls):
@@ -58,8 +68,13 @@ class BookService:
         
 
 class LibraryService:
-    def __init__(self, id:int):
-        self.instance = Library(**Database.get_obj("Library", id))
+        
+    def get_library(self, id:int):
+        return Library(**Database.get_obj("Library", id))
+        
+    def create_library(self, name:str, location:str):
+        new_id = Database.generate_id_from(Library)
+        Database.save_obj(Library(new_id, name, location))
         
     def get_book(self, id:int) -> Book:
         return self.instance.books.get(id,None)

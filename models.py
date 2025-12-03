@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class User:
@@ -17,5 +17,7 @@ class Book:
 @dataclass
 class Library:
     id: int
-    books: dict
+    name: str
+    location: str
+    books: dict = field(default_factory=dict)
     
