@@ -3,4 +3,5 @@
 # Lo mejor es que la dependencia sea el minimo possible
 # abstraccion -> grado de capas que tiene mi componente(numero de niveles) Maximo 3 niveles, 4 ya seria demasiado inestable
 # inestabilidad -> como de facil es que mi codigo se rompa (dependencias externas, si se rompen es inestable)
-# la forma de reducir la inestabilidad es abrtaccion, però no abstraer mucho.
+# acoplamiento -> la forma de reducir la inestabilidad es abrtaccion, però no abstraer mucho.
+# la conescencia és cuando un componente se tiene que cambiar cambiando otro, entonces es conesciente.
