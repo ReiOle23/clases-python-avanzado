@@ -7,6 +7,12 @@
             "name": "Hola",
             "location": "Barcelona",
             "books": {}
+        },
+        "2": {
+            "id": 2,
+            "name": "name",
+            "location": "location",
+            "books": {}
         }
     }
 }
