@@ -173,3 +173,8 @@
         # Extension pago
         # Extension calculo
         
+
+
+# en una arquitectura basada en servicios es facil hacer cambios
+# examen es tipo test 20 preguntas 8 de codigo, 8 arquitectura y 4 de diseño(algo de diseño que este mal)
+# certificacion es tipo test y tipo practica
