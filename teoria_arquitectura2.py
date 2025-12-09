@@ -118,7 +118,7 @@
     # - departamento de viajes, seguro de vida, legal, comercial
     # - todos son clientes, la taxonomia define como todos esos datos se comunican (tabla de tablas)
     # - Se utiliza en bancos
-    # - Servicio viages, servicio comercial, servicio tecnologia, etc
+    # - Servicio viajes, servicio comercial, servicio tecnologia, etc
     # - servicios de infraestructura, servicios de applicacion, servicios de dominio, servicios de base de datos
     # cada servicio tiene su propia base de datos, que se conectan con la taxonomia definida
     # orquestración -> implica que los servicios vaian uno detras de otro (no te puedo dar un seguro si no tienes coche)
@@ -128,7 +128,28 @@
     # la mas dificil de testear, muy buena escalando, muy elastica, es la mas cara de todas.
     
 # - Microservicios
-    # - 
+    # - surge de la idea de DDD, contexto limitado
+    # servicios lo mas pequeño possibles, con su propia base de datos, para meterlos en contenedores
+    # mediante colas asyn se comunican entre ellos
+    # Capa de exterior(servicios api), capa interior(servicios que se dedican a hacer cosas pequeñas)
+    # arquitectura distribuida porque cada una corre en su propio contexto
+    # te permite servicios con lenguajes y bases de datos diferentes.
+    # Son eficientes para escalar horizontalmente, pero verticalmente no
+    # la idea és que sean lo mas granulaes possibles, el gran reto son las transacciones entre ellos
+    # sobretodo en base de datos.
+    # Solucion al caos de comunicacion entre ellos: aislar lo mas possible o hacemos una arquitectura dedicada a ello.
+    # patron sidecar, servicio dentro de otro para tener una capa intermedia entre dos microservicios.
+    # service mesh, red entera de servicios.
+    # orquestracion y coreografia
+    # orquestracion: servicio conector entre grupos de servicios(se dividen por dominio). seria un Mediador
+    # coreografia: comunica los servicios entre si en un orden sincrono. Seria un Broker
+    # kubernetes es un orquestrador
+    # ansible es un coreografiador
+    # Si queremos mantener la consistencia de la base de datos, utilizamos patron saga que cuenta las transacciones que se hacen
+    # para que se ordenen en un orden logico.
+    # Para rastrear errores necessitare un service mesh para rastrear transacciones.
+    # por dominio, quantas: numero de microservicios*contenedores*capas, coste es caro, no tiene mucha performance
+    # implementaciones son sencillas, son todos idempotentes, testeo super dificil, redespliegue y escalabilidad muy buenos.
 
 # Especiales:
 # - Basado en servicios (mezcla monolito y distribuido) (particionado de dominio)
@@ -143,7 +164,33 @@
     # Problema: tener en cuenta el orden de las transacciones
     # Cuando utilizar: en DDD es lo mas comun, buena arquitectura cuando se aplica bien.
     
-# - Basado en espacio
+# - Basado en eventos(espacio)
+    # patron asyncrono
+    # No es tipo crud
+    # sistema de subastas, te tienes que adaptar al estado de las apuestas
+    # por eso utilizamos eventos, y se van comunicando entre ellos.
+    # Dos topologias: Broker -> mas senzilla, Mediador -> mas complicada.
+    # ej de evento: Geofence, evento que hace un radio de 30 metros de seguridad.
+    # si el mobil de agresor entra en esos 30 metros, envia notificacion por la red al dispositivo
+    # del cliente para saber que esta alli.
+    # Topologia Broker:
+    # Todos los eventos estan conectados con un Broker. Kafka, define topicos(ej. Pajaros),
+    # productores de eventos(ej. Fotografos), consumidores(ej. aficionados a los pajaros)
+    # asincronia entre productores, broker y consumidores.
+    # broker recibe y envia
+    # No todos los eventos tienen que pasar por broker
+    # todos los servidores son brokers de eventos
+    # los topics pueden tener mas de 1 evento
+    # es asyncrono todo, para evitar, con el broker metemos un orquestrador de estado para ver como va cada evento.
+    # interfaces graficas para que nos enseñe, red panda.
+    # desacoplado, es muy escalable, elastico, areglar errores rapido(puedo desplegar evento rapido),
+    # muy complejo de entender, la transaccion es fragil, es muy complicado hacer rollback de un evento.
+    # Topologia de Mediador
+    # Mediador que gestiona eventos. Como una cola asyncrona, envia por canales el evento.
+    # toda comunicacion passa por el mediador(broker), (mediadores secundarios o terciarios)
+    # mediadores serian como capas(particionado por dominio)
+    # suele ser mas complejo que el de Broker, py manejo de errores con flower
+    # particionado tecnico, quanta(numero de servicios), compleja pero simple, altamente modular, escalable
 
 
 # cosas criticas
@@ -178,3 +225,5 @@
 # en una arquitectura basada en servicios es facil hacer cambios
 # examen es tipo test 20 preguntas 8 de codigo, 8 arquitectura y 4 de diseño(algo de diseño que este mal)
 # certificacion es tipo test y tipo practica
+
+
